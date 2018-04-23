@@ -6,59 +6,74 @@
  */
 
 import React, { Component } from 'react';
-import { Alert, Animated, Dimensions,InteractionManager } from 'react-native';
+import { Alert, View, Image } from 'react-native';
+import Swiper from 'react-native-swiper';
 import StorageUtils from '../global/StorageUtils';
 
-const splashImg = require('../assets/img/timg.jpeg');
-const { width, height } = Dimensions.get('window');
+import styles from '../style/StyleSheets';
 
-import TabNavigator from '../screens/TabNavigator';
+/**
+ * 轮播图片
+ */
+const imageList = [
+    
+    'https://img.xiu8.com/img/avatar/m/1_1/7a/566/508fa67aa34fd3e3c33504f91785667a.jpg',
+    'https://img.xiu8.com/img/avatar/m/1_1/eb/3db/de8420600b89e4b0a3e1c82d6bf3dbeb.jpg',
+    'https://img.xiu8.com/img/avatar/m/1_1/99/465/158d732142689616f364cb4355e46599.jpg'
+];
 
 export default class SplashView extends Component {
     constructor(props) {
         super(props);
-        console.info("props",props);
-        this.state = {
-            bounceValue: new Animated.Value(1)
-        };
+        console.log('------constructor,props:${props}');
     };
     componentDidMount() {
-        Animated.timing(this.state.bounceValue, { toValue: 1.2, duration: 1000 }).start();
-        const {navigation} = this.props;
-        this.timer = setTimeout(() => {
-            StorageUtils.getAsync('firstLogin').then((data) => {
-                if (data == null || data == '') {
-                    Alert.alert('用户是第一次登陆');
-                    InteractionManager.runAfterInteractions(()=>{
-                        console.info(navigation);
-                        // navigation.resetTo({
-                        //     component:TabNavigator,
-                        //     name:'TabNavigator'
-                        // });
-                    });
-                } else {
-                    Alert.alert('用户非首次登录，直接进入下一级页面');
-                }
-            }, (error) => {
-                console.log(error);
-
-            })
-        });
+        console.log('------ccomponentDidMount');
+        // StorageUtils.getAsync('firstLogin').then((data) => {
+        //     if (data == null || data == '') {
+        //         Alert.alert('用户是第一次登陆');
+        //     } else {
+        //         Alert.alert('用户非首次登录，直接进入下一级页面');
+        //     }
+        // }, (error) => {
+        //     console.log(error);
+        // });
     };
 
     componentWillUpdate() {
-        clearTimeout(this.timer);
+        console.log('------componentWillUpdate');
     };
 
     render() {
+        console.log('------render');
         return (
-            <Animated.Image
-                style={{
-                    width: width,
-                    height: height,
-                    transform: [{ scale: this.state.bounceValue }]
-                }}
-                source={splashImg}></Animated.Image>
+            <View style={styles.container}>
+                <Swiper
+                    style={{ flex: 1 }}
+                    autoplay={true}>
+                    {this._renderImage()}
+                </Swiper>
+            </View>
         );
     };
+
+    /**
+     * 组装图片列表
+     * 
+     * @returns 
+     * @memberof HomeScreen
+     */
+    _renderImage() {
+        let imgView = [];
+        for (let i = 0; i < imageList.length; i++) {
+            imgView.push(
+                <Image
+                    key={i}
+                    style={{ flex: 1 }}
+                    source={{ uri: imageList[i] }}>
+                </Image>
+            );
+        }
+        return imgView;
+    }
 }

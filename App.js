@@ -9,10 +9,6 @@ import { Text, View } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 
 import TabNavigators from './js/screens/TabNavigator';
-// export default TabNavigator({
-//   Home: { screen: HomeSreen },
-//   Second: { screen: SecondSreen },
-// });
 
 export default class App extends Component {
   componentDidMount() {

@@ -1,10 +1,20 @@
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { TabNavigator,TabBarBottom } from 'react-navigation'
+import { TabNavigator, TabBarBottom, StackNavigator } from 'react-navigation'
 import HomeSreen from './HomeSreen';
 import SecondSreen from './SecondScreen';
 
-export default TabNavigator(
+import SplashView from '../splash/SplashView';
+
+var index = StackNavigator(
+    {
+        SplashView: { screen: SplashView },
+        // home:{screen:MainView},
+    },
+    { headerMode: 'none' },
+);
+
+const MainView = TabNavigator(
     {
         Home: { screen: HomeSreen },
         Second: { screen: SecondSreen },
@@ -36,3 +46,5 @@ export default TabNavigator(
     }
 
 );
+
+export default MainView;
